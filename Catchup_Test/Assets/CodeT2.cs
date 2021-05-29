@@ -19,14 +19,13 @@ public class CodeT2 : MonoBehaviour
     [SerializeField]
     GameObject sidsid;
 
-
     Animator CAanim;
 
     //애니메이션관련
     int State = 3;//1 = 바닥, 2 = 벽, 3 = 공중
     bool IsMove;
     Vector2 State_wall; //1234상하좌우
-
+    
     private void Awake()
     {
         gtp.MainCamera = GameObject.Find("Main Camera").GetComponent<Camera>();
