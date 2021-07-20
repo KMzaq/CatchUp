@@ -15,37 +15,61 @@ public class RoomSystem : MonoBehaviour
 
     private int MonsterSpawnPazeNum = 0;
     public List<shapeCreator> MonsterSpawnPaze = new List<shapeCreator>();
+    public List<GameObject> PazeMonsters = new List<GameObject>(); //살아있는 몬스터 확인용
     [SerializeField]
     private GameObject BaseMonster; //몬스터가 없을때 나올 몬스터임
-
+    public bool EndMap;
     public GameObject shapeCreatorBase;
-    private void StartMap() //다죽이고 실행시키면 monsterspawnpasenum 으로 전체적인 paze를 넘길것
+    public void StartMap() //다죽이고 실행시키면 monsterspawnpasenum 으로 전체적인 paze를 넘길것
     {
-        GameObject MBase;
-        IList list = MonsterSpawnPaze[MonsterSpawnPazeNum]._Monster;
-        print(list.Count);
-        for (int i = 0; i < list.Count; i++)
-        {
-            try
-            {
-                MBase = Instantiate(MonsterSpawnPaze[MonsterSpawnPazeNum]._Monster[i]);
-                MBase.transform.position = MonsterSpawnPaze[MonsterSpawnPazeNum].points[i] + this.gameObject.transform.position;
-            }
-            catch (UnassignedReferenceException)
-            {
-                MBase = Instantiate(BaseMonster);
-                MBase.transform.position = MonsterSpawnPaze[MonsterSpawnPazeNum].points[i] + this.gameObject.transform.position;
 
-                Debug.LogError("몬스터가 안들어간 오류입니다. 페이즈" + MonsterSpawnPazeNum + "번째의 " + i + "몬스터가 지정안되어있습니다. BaseMonster로 대체되었습니다.");
+        if(MonsterSpawnPazeNum >= MonsterSpawnPaze.Count)
+        {
+            //스테이지 클리어
+            print("스테이지클");
+            StageEnd();
+            
+        }
+        if (EndMap != true)
+        {
+            GameObject MBase;
+            IList list = MonsterSpawnPaze[MonsterSpawnPazeNum]._Monster;
+            print(list.Count);
+            for (int i = 0; i < list.Count; i++)
+            {
+                try
+                {
+                    MBase = Instantiate(MonsterSpawnPaze[MonsterSpawnPazeNum]._Monster[i]);
+                    MBase.transform.position = MonsterSpawnPaze[MonsterSpawnPazeNum].points[i] + this.gameObject.transform.position;
+                }
+                catch (UnassignedReferenceException)
+                {
+                    MBase = Instantiate(BaseMonster);
+                    MBase.transform.position = MonsterSpawnPaze[MonsterSpawnPazeNum].points[i] + this.gameObject.transform.position;
+
+                    Debug.LogError("몬스터가 안들어간 오류입니다. 페이즈" + MonsterSpawnPazeNum + "번째의 " + i + "몬스터가 지정안되어있습니다. BaseMonster로 대체되었습니다.");
+                }
+                PazeMonsters.Add(MBase);
             }
         }
-       
     }
-    private void Start()
+
+    public void NextPaze()
     {
-     
+        MonsterSpawnPazeNum++;
         StartMap();
     }
 
+    private void StageEnd()
+    {
+        EndMap = true;
+    }
+
+    public void StageStart()
+    {
+        //test
+        EndMap = false;
+        StartMap();
+    }
 
 }
