@@ -13,7 +13,7 @@ public class PlayerMapST : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("Map")) {
+        if (other.tag.Equals("Map")&& system.room == null) {
             Map = other.gameObject;
             system.room = Map.gameObject.GetComponent<RoomSystem>();
             system.room.StageStart();
