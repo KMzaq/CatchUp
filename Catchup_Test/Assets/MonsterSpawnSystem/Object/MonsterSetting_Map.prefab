@@ -44,4 +44,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MonsterSpawnPaze: []
-  shapeCreatorBase: {fileID: 7858123571389067986, guid: d5a341b19eab35e419e2dbda179a77fe, type: 3}
+  PazeMonsters: []
+  BaseMonster: {fileID: 0}
+  EndMap: 0
+  shapeCreatorBase: {fileID: 7858123571389067986, guid: d5a341b19eab35e419e2dbda179a77fe,
+    type: 3}

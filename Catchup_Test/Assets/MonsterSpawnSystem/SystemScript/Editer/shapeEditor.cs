@@ -153,7 +153,7 @@ public class shapeEditor : Editor
             Handles.DrawDottedLine(_shapeCreator.points[i], nextPoint, 5);
             if(i == selectionInfo.pointIndex)
             {
-                Handles.color = (selectionInfo.pointIsSelected)?Color.black:Color.red;
+                Handles.color = (selectionInfo.pointIsSelected) ? Color.black : Color.red;
 
             }
             else {
@@ -162,7 +162,7 @@ public class shapeEditor : Editor
             }
             //
            // Handles.DrawSolidDisc(_shapeCreator.points[i], Vector3.up, shapeCreator.handleRadius);
-            Handles.DrawWireCube(_shapeCreator.points[i], Vector3.one);
+            Handles.DrawWireCube(_shapeCreator.points[i], Vector3.one*0.1f);
             //Handles.DoPositionHandle(_shapeCreator.points[i], new Quaternion(0, 0, 0, 0));
           
             //
