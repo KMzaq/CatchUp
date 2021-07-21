@@ -17,14 +17,33 @@ public class PlayerController : Actor
     private float speed;
 
     //기능들
-    Rigidbody M_rigidbody;
+    InputControls M_Controls;
+
+    Rigidbody M_Rigidbody;
 
     PWall_Action M_WallAction;
 
+    private void Awake()
+    {
+        M_Controls = new InputControls();
+    }
+
+    private void OnEnable()
+    {
+        M_Controls.Enable();
+    }
+
+    private void OnDisable()
+    {
+        M_Controls.Disable();
+    }
     void Start()
     {
         _State = State.GROUND;
-        M_rigidbody = GetComponent<Rigidbody>();
+
+        //M_Controls.PlayerInput.Movement.performed += _ => Amove();
+
+        M_Rigidbody = GetComponent<Rigidbody>();
         M_WallAction = GetComponent<PWall_Action>();
 
         
@@ -53,6 +72,7 @@ public class PlayerController : Actor
         //        break;
         //}
         //Debug.Log("컨트롤러  반복 종료");
+        Amove();
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -69,18 +89,15 @@ public class PlayerController : Actor
         if (collision.collider.tag == "Floor" && _State == State.AIR)
         {
             _State = State.GROUND;
-            M_rigidbody.velocity = new Vector3(0, 0, 0);
+            M_Rigidbody.velocity = new Vector3(0, 0, 0);
             Debug.Log("추락함");
         }
     }
     private void Amove()
     {
-        //이동 벨로시티이동으로 변경
-        float inputX = Input.GetAxisRaw("Horizontal");
-        float inputZ = Input.GetAxisRaw("Vertical");
-
-        //transform.Translate(new Vector3(inputX, 0, inputZ) * Time.deltaTime * speed);
-        //M_rigidbody.velocity = new Vector3(inputX * speed, 0, inputZ * speed);
-        M_rigidbody.MovePosition(transform.position + new Vector3(inputX * 0.01f * speed, 0, inputZ * 0.01f * speed));
+        
+        Vector2 inputVelue = M_Controls.PlayerInput.Movement.ReadValue<Vector2>();
+        M_Rigidbody.MovePosition(transform.position + new Vector3(inputVelue.x * 0.01f * speed, 0, inputVelue.y * 0.01f * speed));
+        Debug.Log(inputVelue);
     }
 }
