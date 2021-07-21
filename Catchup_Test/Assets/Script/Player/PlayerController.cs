@@ -34,25 +34,25 @@ public class PlayerController : Actor
     Vector2 MouseDir;
     void Update()
     {
-        Debug.Log("컨트롤러 처음 반복 시작");
-        MouseDir = new Vector2(Input.mousePosition.x - Screen.width * 0.5f, Input.mousePosition.y - Screen.height * 0.5f).normalized;
-        switch (_State)
-        {
-            case State.GROUND:
-                Amove();
-                break;
-            case State.WALL:
-                if (Input.GetMouseButtonDown(1))
-                {
-                    M_WallAction.AJump(MouseDir);
-                    _State = State.AIR;
-                }
-                break;
-            case State.AIR:
+        //Debug.Log("컨트롤러 처음 반복 시작");
+        //MouseDir = new Vector2(Input.mousePosition.x - Screen.width * 0.5f, Input.mousePosition.y - Screen.height * 0.5f).normalized;
+        //switch (_State)
+        //{
+        //    case State.GROUND:
+        //        Amove();
+        //        break;
+        //    case State.WALL:
+        //        if (Input.GetMouseButtonDown(1))
+        //        {
+        //            M_WallAction.AJump(MouseDir);
+        //            _State = State.AIR;
+        //        }
+        //        break;
+        //    case State.AIR:
 
-                break;
-        }
-        Debug.Log("컨트롤러  반복 종료");
+        //        break;
+        //}
+        //Debug.Log("컨트롤러  반복 종료");
     }
     private void OnCollisionEnter(Collision collision)
     {

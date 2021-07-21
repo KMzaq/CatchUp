@@ -16,10 +16,10 @@ public class W_TutorGun : Weapon
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Y))
-        {
-            Attack();
-        }
+        //if (Input.GetKeyDown(KeyCode.Y))
+        //{
+        //    Attack();
+        //}
     }
 
     void Attack()

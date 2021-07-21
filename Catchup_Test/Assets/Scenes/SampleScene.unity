@@ -1590,7 +1590,6 @@ GameObject:
   - component: {fileID: 690037256}
   - component: {fileID: 690037253}
   - component: {fileID: 690037252}
-  - component: {fileID: 690037251}
   - component: {fileID: 690037255}
   - component: {fileID: 690037258}
   - component: {fileID: 690037257}
@@ -1603,19 +1602,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &690037251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 690037250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f7c15385f6d63b44bfd81eb3b0135d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _IsBlockInput: 0
 --- !u!136 &690037252
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2919,7 +2905,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1632646615}
   - component: {fileID: 1632646614}
-  - component: {fileID: 1632646613}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -2927,25 +2912,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1632646613
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1632646612}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_HorizontalAxis: Horizontal
-  m_VerticalAxis: Vertical
-  m_SubmitButton: Submit
-  m_CancelButton: Cancel
-  m_InputActionsPerSecond: 10
-  m_RepeatDelay: 0.5
-  m_ForceModuleActive: 0
 --- !u!114 &1632646614
 MonoBehaviour:
   m_ObjectHideFlags: 0
