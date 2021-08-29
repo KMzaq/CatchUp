@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RoomSystem : MonoBehaviour
-{
+public class RoomSystem : MonoBehaviour { 
+
+
 
     //몬스터를 풀링 방식으로 전체 방의 몬스터계체 마다의 최대 개수를 구하고 생성이 아니라 
     //다시 활동으로 제작하는건 어떨까?
-    
+
     // 두번째 방법
     //가까운 몬스터부터 미리생성해둔다. 이후 플레이어가 갈수있는 방을 기준으로 몹을 미리 생성시킨다.
 

@@ -8,15 +8,18 @@ public class PlayerMapST : MonoBehaviour
     [SerializeField]
      private CapsuleCollider playercollider;
     [SerializeField]
-    private WoldMapSystem system;
+  //  private WoldMapSystem system;
     private GameObject Map;
-
+    private void Awake()
+    {
+       WoldMapSystem.Insternse.room =null;
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Equals("Map")&& system.room == null) {
+        if (other.tag.Equals("Map")&& WoldMapSystem.Insternse.room == null) {
             Map = other.gameObject;
-            system.room = Map.gameObject.GetComponent<RoomSystem>();
-            system.room.StageStart();
+            WoldMapSystem.Insternse.room = Map.gameObject.GetComponent<RoomSystem>();
+            WoldMapSystem.Insternse.room.StageStart();
         }
     }
 
