@@ -12,67 +12,79 @@ public class PlayerController : Actor
     [SerializeField]
     Dir _WallDir;
 
+    //
+    Vector2 MousePos = Vector2.zero;
+    Vector2 MouseDir = Vector2.zero;
+    bool blockAllAction = false;
+    bool blockMove = false;
+    bool blockAttack = false;
+
     //스테이터스 나중에 값 가져오게 설정
     [SerializeField]
     private float speed;
 
-    //기능들
-    InputControls M_Controls;
+    #region Components
+    public static InputControls Player_Controls;
+    PlayerWeaponManager M_PWeaponManager;
+    PWall_Action M_WallAction;
 
     Rigidbody M_Rigidbody;
+    #endregion
 
-    PWall_Action M_WallAction;
 
     private void Awake()
     {
-        M_Controls = new InputControls();
+        Player_Controls = new InputControls();
+        M_PWeaponManager = Util.GetorAddComponent<PlayerWeaponManager>(this.gameObject);
+        M_WallAction = Util.GetorAddComponent<PWall_Action>(this.gameObject);
+
+        M_Rigidbody = Util.GetorAddComponent<Rigidbody>(this.gameObject);
     }
+
 
     private void OnEnable()
     {
-        M_Controls.Enable();
+        Player_Controls.Enable();
     }
 
     private void OnDisable()
     {
-        M_Controls.Disable();
+        Player_Controls.Disable();
     }
     void Start()
     {
         _State = State.GROUND;
 
-        //M_Controls.PlayerInput.Movement.performed += _ => Amove();
 
-        M_Rigidbody = GetComponent<Rigidbody>();
-        M_WallAction = GetComponent<PWall_Action>();
+        Player_Controls.PlayerInput.Attack.performed += _ => {
+            if (blockAttack || blockAllAction) return;
+            M_PWeaponManager.Func_attack.Invoke();
+        };
+        Player_Controls.PlayerInput.Jump.performed += _ => {
+            if (_State != State.WALL || blockAllAction) return;
+            { M_WallAction.AJump(MouseDir); _State = State.AIR; Debug.Log("as"); }
+        };
+        Player_Controls.PlayerInput.MousePosition.performed += _ => M_PWeaponManager.AimmingWeapon();
 
-        
-        
     }
 
-    Vector2 MouseDir;
     void Update()
     {
-        //Debug.Log("컨트롤러 처음 반복 시작");
-        //MouseDir = new Vector2(Input.mousePosition.x - Screen.width * 0.5f, Input.mousePosition.y - Screen.height * 0.5f).normalized;
-        //switch (_State)
-        //{
-        //    case State.GROUND:
-        //        Amove();
-        //        break;
-        //    case State.WALL:
-        //        if (Input.GetMouseButtonDown(1))
-        //        {
-        //            M_WallAction.AJump(MouseDir);
-        //            _State = State.AIR;
-        //        }
-        //        break;
-        //    case State.AIR:
+        MousePos = Player_Controls.PlayerInput.MousePosition.ReadValue<Vector2>(); 
+        MouseDir = (MousePos - new Vector2(Screen.width * 0.5f, Screen.height * 0.5f)).normalized;
+        //Debug.Log(MouseDir);
+        switch (_State)
+        {
+            case State.GROUND:
+                Amove();
+                break;
+            case State.WALL:
 
-        //        break;
-        //}
-        //Debug.Log("컨트롤러  반복 종료");
-        Amove();
+                break;
+            case State.AIR:
+
+                break;
+        }
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -95,9 +107,11 @@ public class PlayerController : Actor
     }
     private void Amove()
     {
-        
-        Vector2 inputVelue = M_Controls.PlayerInput.Movement.ReadValue<Vector2>();
+        if (blockMove)
+            return;
+
+        Vector2 inputVelue = Player_Controls.PlayerInput.Movement.ReadValue<Vector2>();
         M_Rigidbody.MovePosition(transform.position + new Vector3(inputVelue.x * 0.01f * speed, 0, inputVelue.y * 0.01f * speed));
-        Debug.Log(inputVelue);
+
     }
 }

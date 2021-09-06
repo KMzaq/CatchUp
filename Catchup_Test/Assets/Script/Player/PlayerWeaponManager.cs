@@ -9,34 +9,64 @@ public class PlayerWeaponManager : MonoBehaviour
     [SerializeField]
     private GameObject Used_Weapon;
 
+    [SerializeField]
+    private SpriteRenderer Image;
+
+    public delegate void del_Attack();
+    public del_Attack Func_attack { get; protected set; }
+
+    enum HANDDIR { LEFT, RIGHT }
+    HANDDIR _HandDir = HANDDIR.RIGHT; //enum dir 공유할수있는 방법 있으면 좋을거같음
+    Vector2 MouseDir;
+    float RotX = 0;
+    float WeaponAngle = 0;
+    int SpinDir = 1;
+
     void Start()
     {
-        
+        SetUsedWeapon();
     }
 
     void Update()
     {
-        handposchange();
-        AimmingHand();
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    WeaponFlip(); //플립 조건 설정 필요 ex엔터더건전
-        //}
+        if (_HandDir == HANDDIR.LEFT) //30보다 작음
+        {
+            if (Mathf.Abs(WeaponAngle) < 50)
+            {
+                _HandDir = HANDDIR.RIGHT;
+                Hand.transform.localPosition = new Vector3(0.1f, 0, 0);
+                RotX = 0;
+                SpinDir = 1;
+                Image.flipX = false;
+            }
+        }
+        else if (_HandDir == HANDDIR.RIGHT)
+        {
+            if (Mathf.Abs(WeaponAngle) > 130)
+            {
+                _HandDir = HANDDIR.LEFT;
+                Hand.transform.localPosition = new Vector3(-0.1f, 0, 0);
+                RotX = 180;
+                SpinDir = -1;
+                Image.flipX = true;
+            }
+        }
+    }
+    public void AimmingWeapon()
+    {
+        MouseDir = (PlayerController.Player_Controls.PlayerInput.MousePosition.ReadValue<Vector2>() - (Vector2)Camera.main.WorldToScreenPoint(transform.position)).normalized;
+        WeaponAngle = Mathf.Atan2(MouseDir.y, MouseDir.x) * Mathf.Rad2Deg;
+
+        Used_Weapon.transform.localRotation = Quaternion.Euler(RotX, 0, WeaponAngle * SpinDir);
+
     }
 
-    private void handposchange()
+    private void SetUsedWeapon()
     {
-        //Vector3 MouseDir = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
-        //Hand.transform.localPosition = MouseDir * 0.1f;
-    }
-    private void AimmingHand()
-    {
-        //Vector3 MouseDir = (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized;
-        //Hand.transform.localRotation = Quaternion.Euler(0, 0, Mathf.Atan2(MouseDir.y, MouseDir.x) * Mathf.Rad2Deg);
+        Func_attack -= Used_Weapon.GetComponent<Weapon>().Attack;
+        //무기가 변경된 후 -를 하면 전에것이 빠지는가 아님 무기가 달라서 안빠지는가 실험 필요
+
+        Func_attack += Used_Weapon.GetComponent<Weapon>().Attack;
     }
 
-    private void WeaponFlip()
-    {
-        //Used_Weapon.GetComponent<SpriteRenderer>().flipY = !Used_Weapon.GetComponent<SpriteRenderer>().flipY;
-    }
 }

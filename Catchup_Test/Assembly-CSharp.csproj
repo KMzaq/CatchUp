@@ -64,7 +64,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\CodeT3.cs" />
     <Compile Include="Assets\InputControls.cs" />
     <Compile Include="Assets\MonsterSpawnSystem\SystemScript\Editer\shapeEditor.cs" />
     <Compile Include="Assets\MonsterSpawnSystem\SystemScript\PlayerMapST.cs" />
@@ -76,15 +75,23 @@
     <Compile Include="Assets\Script\ActorAnimEventer.cs" />
     <Compile Include="Assets\Script\ActorManager.cs" />
     <Compile Include="Assets\Script\BulletController.cs" />
-    <Compile Include="Assets\Script\MousePos.cs" />
+    <Compile Include="Assets\Script\Item\Active\ActiveItem.cs" />
+    <Compile Include="Assets\Script\Item\DroppedItem.cs" />
+    <Compile Include="Assets\Script\Item\Inventory.cs" />
+    <Compile Include="Assets\Script\Item\InventoryManager.cs" />
+    <Compile Include="Assets\Script\Item\Item.cs" />
+    <Compile Include="Assets\Script\Item\ItemData.cs" />
+    <Compile Include="Assets\Script\Item\Passive\P_T.cs" />
+    <Compile Include="Assets\Script\Item\Passive\PassiveItem.cs" />
+    <Compile Include="Assets\Script\Item\Weapon\W_TutorGun.cs" />
+    <Compile Include="Assets\Script\Item\Weapon\Weapon.cs" />
     <Compile Include="Assets\Script\Player\PlayerController.cs" />
     <Compile Include="Assets\Script\Player\PlayerItemManager.cs" />
     <Compile Include="Assets\Script\Player\PlayerWeaponManager.cs" />
     <Compile Include="Assets\Script\Property\Health.cs" />
     <Compile Include="Assets\Script\Property\PWall_Action.cs" />
     <Compile Include="Assets\Script\UI\MouseCursor.cs" />
-    <Compile Include="Assets\Script\Weapon\W_TutorGun.cs" />
-    <Compile Include="Assets\Script\Weapon\Weapon.cs" />
+    <Compile Include="Assets\Script\Util.cs" />
     <None Include="Assets\MonsterSpawnSystem\readme.txt" />
     <Reference Include="UnityEngine">
       <HintPath>C:/Program Files/Unity/Hub/Editor/2019.4.17f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>
