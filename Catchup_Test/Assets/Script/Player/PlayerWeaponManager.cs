@@ -5,9 +5,10 @@ using UnityEngine;
 public class PlayerWeaponManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject Hand;
+    public GameObject Hand;
     [SerializeField]
     private GameObject Used_Weapon;
+    public GameObject Weapons;
 
     [SerializeField]
     private SpriteRenderer Image;
@@ -22,9 +23,14 @@ public class PlayerWeaponManager : MonoBehaviour
     float WeaponAngle = 0;
     int SpinDir = 1;
 
+    int curInventoryIndex = 0;
+    int curItemIndex = 0;
+
     void Start()
     {
-        SetUsedWeapon();
+        if (!Used_Weapon)
+            Used_Weapon = Inventory.Instance.Inventory_Scroll[0, 0].gameObject;
+        Func_attack += Used_Weapon.GetComponent<Weapon>().Attack;
     }
 
     void Update()
@@ -57,16 +63,82 @@ public class PlayerWeaponManager : MonoBehaviour
         MouseDir = (PlayerController.Player_Controls.PlayerInput.MousePosition.ReadValue<Vector2>() - (Vector2)Camera.main.WorldToScreenPoint(transform.position)).normalized;
         WeaponAngle = Mathf.Atan2(MouseDir.y, MouseDir.x) * Mathf.Rad2Deg;
 
-        Used_Weapon.transform.localRotation = Quaternion.Euler(RotX, 0, WeaponAngle * SpinDir);
+        Weapons.transform.localRotation = Quaternion.Euler(RotX, 0, WeaponAngle * SpinDir);
 
     }
 
-    private void SetUsedWeapon()
+
+    public void SetUsedWeapon(int value)
     {
-        Func_attack -= Used_Weapon.GetComponent<Weapon>().Attack;
-        //무기가 변경된 후 -를 하면 전에것이 빠지는가 아님 무기가 달라서 안빠지는가 실험 필요
+        Weapon T = null;
 
-        Func_attack += Used_Weapon.GetComponent<Weapon>().Attack;
+        switch(value)
+        {
+            case 0:
+                Func_attack -= Used_Weapon.GetComponent<Weapon>().Attack;
+                Inventory.Instance.Inventory_Scroll[curItemIndex, curInventoryIndex].gameObject.SetActive(false);
+                curInventoryIndex = value;
+                curItemIndex++;
+                if (curItemIndex >= 5)
+                    curItemIndex = 0;
+
+                if (Inventory.Instance.Inventory_Scroll[curItemIndex, curInventoryIndex] == null)
+                {
+                    for (var i = 0; i < Inventory.Instance.Inventory_Scroll.GetLength(curInventoryIndex); i++)
+                    {
+                        var index = i + curItemIndex;
+                        if (index >= 5)
+                            index -= 5;
+                        T = Inventory.Instance.Inventory_Scroll[index, curInventoryIndex];
+                        if (T != null)
+                        {
+                            curItemIndex = index;
+                            break;
+                        }
+                    }
+                } else T = Inventory.Instance.Inventory_Scroll[curItemIndex, curInventoryIndex];
+
+                T.gameObject.transform.SetParent(Weapons.transform);
+                Used_Weapon = T.gameObject;
+                T.gameObject.SetActive(true);
+                Func_attack += Used_Weapon.GetComponent<Weapon>().Attack;
+
+                break;
+            case 1:
+
+                Func_attack -= Used_Weapon.GetComponent<Weapon>().Attack;
+                Inventory.Instance.Inventory_Scroll[curItemIndex, curInventoryIndex].gameObject.SetActive(false);
+                curInventoryIndex = value;
+                curItemIndex++;
+                if (curItemIndex >= 5)
+                    curItemIndex = 0;
+
+
+                T = Inventory.Instance.Inventory_Scroll[curItemIndex, curInventoryIndex];
+
+                if (T == null)
+                {
+                    for (var i = 0; i < Inventory.Instance.Inventory_Scroll.GetLength(curInventoryIndex); i++)
+                    {
+                        var index = i + curItemIndex;
+                        if (index >= 5)
+                            index -= 5;
+                        T = Inventory.Instance.Inventory_Scroll[index, curInventoryIndex];
+                        if (T != null)
+                            break;
+                    }
+                }
+
+                T.gameObject.transform.SetParent(Weapons.transform);
+                Used_Weapon = T.gameObject;
+                T.gameObject.SetActive(true);
+                Func_attack += Used_Weapon.GetComponent<Weapon>().Attack;
+
+                break;
+            default:
+                SetUsedWeapon(curInventoryIndex);
+                return;
+        }
+
     }
-
 }

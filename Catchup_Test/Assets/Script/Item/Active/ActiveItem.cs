@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveItem : Item
+public abstract class ActiveItem : BaseItem
 {
-    // Start is called before the first frame update
-    void Start()
+    public ActiveItemData activeItemData;
+    public override void Init()
     {
-        
+        base.Init();
+        itemData.itemType = ItemType.ACTIVEITEM;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public abstract void UseSkill();
 }

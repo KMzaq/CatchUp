@@ -2,30 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class W_TutorGun : Weapon
+public class W_TutorGun : RangedWeapon
 {
-    [SerializeField]
-    private GameObject bullet;
-    [SerializeField]
-    private GameObject muzzle;
-    void Start()
+    public GameObject bullet;
+    public GameObject bulletSpawnPos;
+    public override void Init()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Y))
-        //{
-        //    Attack();
-        //}
+        base.Init();
     }
 
     public override void Attack()
     {
-        Debug.Log("Attack");
-        //GameObject Instance = Instantiate(bullet, muzzle.transform.position, Quaternion.identity);
-        //Instance.GetComponent<BulletController>().ShootSetting(1, 1f, (Input.mousePosition - Camera.main.WorldToScreenPoint(transform.position)).normalized);
+        GameObject go = Instantiate(bullet);
+        go.transform.position = bulletSpawnPos.transform.position;
+        go.transform.rotation = bulletSpawnPos.transform.rotation;
+        Vector2 vector = (PlayerController.Player_Controls.PlayerInput.MousePosition.ReadValue<Vector2>() - new Vector2(Screen.width * 0.5f, Screen.height * 0.5f)).normalized;
+        Debug.Log(vector);
+        go.GetComponent<BulletController>().ShootSetting(rangedWeaponData.damage, rangedWeaponData.bulletSpeed, new Vector3(vector.x, 0, vector.y));
+        
+        var T = go.GetComponent<BulletController>();
+        T._damage = rangedWeaponData.damage;
+        
     }
 }

@@ -2,9 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveItem : Item
+public abstract class PassiveItem : BaseItem
 {
     
+    public override void Init()
+    {
+        base.Init();
+        itemData.itemType = ItemType.PASSIVEITEM;
+    }
 
-    
+    public abstract void OnEffect();
 }

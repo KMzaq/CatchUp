@@ -6,51 +6,70 @@ public class Inventory : MonoBehaviour
 {
     public static Inventory Instance { get; private set; }
 
-    public ItemData[] Inventory_Scroll_1 = new ItemData[5];
-    public ItemData[] Inventory_Scroll_2 = new ItemData[5];
-    public ItemData Inventory_Active;
-    public List<ItemData> Inventory_Passive = new List<ItemData>();
+    public Weapon[,] Inventory_Scroll = new Weapon[5,2];
+    public ActiveItem Inventory_Active;
+    public List<PassiveItem> Inventory_Passive = new List<PassiveItem>();
+
+    public GameObject FirstWeapon;
+    public GameObject SecondWeapon;
+
 
     void Start()
     {
         if (Instance == null)
             Instance = this;
+
+
+        GameObject go1 = Instantiate(FirstWeapon);
+        DontDestroyOnLoad(go1);
+        go1.SetActive(false);
+        Inventory_Scroll[0, 0] = go1.GetComponent<Weapon>();
+
+        GameObject go2 = Instantiate(SecondWeapon);
+        DontDestroyOnLoad(go2);
+        go1.SetActive(false);
+        Inventory_Scroll[0, 1] = go2.GetComponent<Weapon>();
     }
 
-    public bool GetItem(ItemData item)
+    public bool GetItem(BaseItem item)
     {
-        switch (item._ItemType)
-        {
-            case ItemType.Weapon:
-                for (var i = 0; i < Inventory_Scroll_1.Length; i++)
+        if (item is Weapon) {
+            for (var i = 0; i < Inventory_Scroll.GetLength(0); i++)
+            {
+                if (!Instance.Inventory_Scroll[i, 0])
                 {
-                    if (!Instance.Inventory_Scroll_1[i])
-                    {
-                        Instance.Inventory_Scroll_1[i] = item;
-                        return true;
-                    }
+                    Instance.Inventory_Scroll[i, 0] = (Weapon)item;
+                    DontDestroyOnLoad(item.gameObject);
+                    item.gameObject.SetActive(false);
+
+                    return true;
                 }
-                for (var i = 0; i < Inventory_Scroll_2.Length; i++)
+            }
+            for (var i = 0; i < Inventory_Scroll.GetLength(1); i++)
+            {
+                if (!Instance.Inventory_Scroll[i, 1])
                 {
-                    if (!Instance.Inventory_Scroll_2[i])
-                    {
-                        Instance.Inventory_Scroll_2[i] = item;
-                        return true;
-                    }
+                    Instance.Inventory_Scroll[i, 1] = (Weapon)item;
+                    DontDestroyOnLoad(item.gameObject);
+                    item.gameObject.SetActive(false);
+
+                    return true;
                 }
-                break;
+            }
+        }
+        else if (item is ActiveItem) {
+            if (!Inventory_Active)
+            {
+                Inventory_Active = item as ActiveItem;
+                DontDestroyOnLoad(item.gameObject);
+                item.gameObject.SetActive(false);
 
-            case ItemType.Active:
-                if(!Inventory_Active)
-                    Inventory_Active = item;
-                break;
-
-            case ItemType.Passive:
-                Inventory_Passive.Add(item);
-                break;
-
-            default:
-                break;
+                return true;
+            }
+        }
+        else if (item is PassiveItem) {
+            Inventory_Passive.Add(item as PassiveItem);
+            return true;
         }
         return false;
     }

@@ -49,6 +49,38 @@ public class @InputControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""UseActive"",
+                    ""type"": ""Button"",
+                    ""id"": ""58de6fc6-1c3e-41f5-901b-95d1b3ecb836"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeWeapon"",
+                    ""type"": ""Button"",
+                    ""id"": ""e9c09a58-e155-4a09-b31e-ae8a21c42f8d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ChangeWeapon2"",
+                    ""type"": ""Button"",
+                    ""id"": ""9301c913-08ba-4e6e-96b3-2b62bb44a901"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Scroll"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""2c7b7c33-1f19-47e6-b388-b139de4202d9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -139,6 +171,50 @@ public class @InputControls : IInputActionCollection, IDisposable
                     ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1cd1c771-c47c-418f-b1e3-b3c9f5a878cb"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseActive"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0d2bffe1-f2ed-4a86-8e07-4f5d1e10e8db"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeWeapon"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ac32e6bb-556b-461f-b03f-6ab8f6017e86"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeWeapon2"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da1f81c6-0218-4e96-b6ec-78b34d0e6211"",
+                    ""path"": ""<Mouse>/scroll/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -151,6 +227,10 @@ public class @InputControls : IInputActionCollection, IDisposable
         m_PlayerInput_Attack = m_PlayerInput.FindAction("Attack", throwIfNotFound: true);
         m_PlayerInput_Jump = m_PlayerInput.FindAction("Jump", throwIfNotFound: true);
         m_PlayerInput_MousePosition = m_PlayerInput.FindAction("MousePosition", throwIfNotFound: true);
+        m_PlayerInput_UseActive = m_PlayerInput.FindAction("UseActive", throwIfNotFound: true);
+        m_PlayerInput_ChangeWeapon = m_PlayerInput.FindAction("ChangeWeapon", throwIfNotFound: true);
+        m_PlayerInput_ChangeWeapon2 = m_PlayerInput.FindAction("ChangeWeapon2", throwIfNotFound: true);
+        m_PlayerInput_Scroll = m_PlayerInput.FindAction("Scroll", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -204,6 +284,10 @@ public class @InputControls : IInputActionCollection, IDisposable
     private readonly InputAction m_PlayerInput_Attack;
     private readonly InputAction m_PlayerInput_Jump;
     private readonly InputAction m_PlayerInput_MousePosition;
+    private readonly InputAction m_PlayerInput_UseActive;
+    private readonly InputAction m_PlayerInput_ChangeWeapon;
+    private readonly InputAction m_PlayerInput_ChangeWeapon2;
+    private readonly InputAction m_PlayerInput_Scroll;
     public struct PlayerInputActions
     {
         private @InputControls m_Wrapper;
@@ -212,6 +296,10 @@ public class @InputControls : IInputActionCollection, IDisposable
         public InputAction @Attack => m_Wrapper.m_PlayerInput_Attack;
         public InputAction @Jump => m_Wrapper.m_PlayerInput_Jump;
         public InputAction @MousePosition => m_Wrapper.m_PlayerInput_MousePosition;
+        public InputAction @UseActive => m_Wrapper.m_PlayerInput_UseActive;
+        public InputAction @ChangeWeapon => m_Wrapper.m_PlayerInput_ChangeWeapon;
+        public InputAction @ChangeWeapon2 => m_Wrapper.m_PlayerInput_ChangeWeapon2;
+        public InputAction @Scroll => m_Wrapper.m_PlayerInput_Scroll;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -233,6 +321,18 @@ public class @InputControls : IInputActionCollection, IDisposable
                 @MousePosition.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
                 @MousePosition.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
                 @MousePosition.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnMousePosition;
+                @UseActive.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnUseActive;
+                @UseActive.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnUseActive;
+                @UseActive.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnUseActive;
+                @ChangeWeapon.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeWeapon;
+                @ChangeWeapon.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeWeapon;
+                @ChangeWeapon.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeWeapon;
+                @ChangeWeapon2.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeWeapon2;
+                @ChangeWeapon2.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeWeapon2;
+                @ChangeWeapon2.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnChangeWeapon2;
+                @Scroll.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnScroll;
+                @Scroll.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnScroll;
+                @Scroll.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnScroll;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -249,6 +349,18 @@ public class @InputControls : IInputActionCollection, IDisposable
                 @MousePosition.started += instance.OnMousePosition;
                 @MousePosition.performed += instance.OnMousePosition;
                 @MousePosition.canceled += instance.OnMousePosition;
+                @UseActive.started += instance.OnUseActive;
+                @UseActive.performed += instance.OnUseActive;
+                @UseActive.canceled += instance.OnUseActive;
+                @ChangeWeapon.started += instance.OnChangeWeapon;
+                @ChangeWeapon.performed += instance.OnChangeWeapon;
+                @ChangeWeapon.canceled += instance.OnChangeWeapon;
+                @ChangeWeapon2.started += instance.OnChangeWeapon2;
+                @ChangeWeapon2.performed += instance.OnChangeWeapon2;
+                @ChangeWeapon2.canceled += instance.OnChangeWeapon2;
+                @Scroll.started += instance.OnScroll;
+                @Scroll.performed += instance.OnScroll;
+                @Scroll.canceled += instance.OnScroll;
             }
         }
     }
@@ -259,5 +371,9 @@ public class @InputControls : IInputActionCollection, IDisposable
         void OnAttack(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnMousePosition(InputAction.CallbackContext context);
+        void OnUseActive(InputAction.CallbackContext context);
+        void OnChangeWeapon(InputAction.CallbackContext context);
+        void OnChangeWeapon2(InputAction.CallbackContext context);
+        void OnScroll(InputAction.CallbackContext context);
     }
 }

@@ -9,8 +9,6 @@ public class PWall_Action : MonoBehaviour
 
     private Rigidbody A_rigidbody;
 
-
-
     [SerializeField]
     private int speed;
     [SerializeField]
@@ -20,11 +18,14 @@ public class PWall_Action : MonoBehaviour
     [SerializeField]
     private float JumpDistance;
 
-    [SerializeField]
-    private bool IsJumping = false;
+    public bool IsJumping = false;
+
+    public ActorController actorController;
     void Start()
     {
         A_rigidbody = GetComponent<Rigidbody>();
+
+        actorController = Util.GetorAddComponent<ActorController>(this.gameObject);
 
         //점프 횟수와 속도
     }
@@ -70,6 +71,7 @@ public class PWall_Action : MonoBehaviour
         {
             print("위");
             dir = 0;
+            //Player_Animator.SetFloat("_DirX", MouseDir.x);
         }
         else if (degree <= -DegreeStandardAngle && degree >= -DegreeStandardAngle2)
         {
@@ -105,6 +107,7 @@ public class PWall_Action : MonoBehaviour
 
     IEnumerator WallClimbing(Collision wall)
     {
+        actorController.blockAllAction = true;
         float ChapPosY = wall.collider.bounds.size.y - 0.13f;
         float count = 0;
         Vector3 wasPos = this.transform.position;
@@ -118,6 +121,8 @@ public class PWall_Action : MonoBehaviour
             if (count >= 1) // count / speed 이동속도 반영되야함
             {
                 print("벽타기끝");
+                actorController.blockAllAction = false;
+                PlayerController.Player_Animator.SetTrigger("_IsLanded");
                 this.transform.position = new Vector3(wasPos.x, ChapPosY, wasPos.z);
                 break;
             }
